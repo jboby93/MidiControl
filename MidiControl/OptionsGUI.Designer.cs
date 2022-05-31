@@ -43,9 +43,12 @@
 			this.BtnRequestTwitchLogout = new System.Windows.Forms.Button();
 			this.BtnRequestTwitchLogin = new System.Windows.Forms.Button();
 			this.txtBoxTwitchLogin = new System.Windows.Forms.TextBox();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.chkConfirmKeybindDeletions = new System.Windows.Forms.CheckBox();
 			this.groupBoxOBS.SuspendLayout();
 			this.groupBoxMIDI.SuspendLayout();
 			this.groupBoxTwitch.SuspendLayout();
+			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// LblOBSIP
@@ -83,7 +86,8 @@
 			// 
 			// BtnSave
 			// 
-			this.BtnSave.Location = new System.Drawing.Point(167, 238);
+			this.BtnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.BtnSave.Location = new System.Drawing.Point(167, 289);
 			this.BtnSave.Name = "BtnSave";
 			this.BtnSave.Size = new System.Drawing.Size(75, 23);
 			this.BtnSave.TabIndex = 6;
@@ -196,18 +200,38 @@
 			this.txtBoxTwitchLogin.Size = new System.Drawing.Size(109, 20);
 			this.txtBoxTwitchLogin.TabIndex = 0;
 			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.chkConfirmKeybindDeletions);
+			this.groupBox1.Location = new System.Drawing.Point(12, 238);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(230, 45);
+			this.groupBox1.TabIndex = 14;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Interface";
+			// 
+			// chkConfirmKeybindDeletions
+			// 
+			this.chkConfirmKeybindDeletions.AutoSize = true;
+			this.chkConfirmKeybindDeletions.Location = new System.Drawing.Point(6, 19);
+			this.chkConfirmKeybindDeletions.Name = "chkConfirmKeybindDeletions";
+			this.chkConfirmKeybindDeletions.Size = new System.Drawing.Size(141, 17);
+			this.chkConfirmKeybindDeletions.TabIndex = 0;
+			this.chkConfirmKeybindDeletions.Text = "Confirm keybind deletion";
+			this.chkConfirmKeybindDeletions.UseVisualStyleBackColor = true;
+			// 
 			// OptionsGUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(254, 271);
+			this.ClientSize = new System.Drawing.Size(254, 322);
+			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.groupBoxTwitch);
 			this.Controls.Add(this.groupBoxMIDI);
 			this.Controls.Add(this.groupBoxOBS);
 			this.Controls.Add(this.BtnSave);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(270, 310);
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(270, 310);
 			this.Name = "OptionsGUI";
@@ -220,6 +244,8 @@
 			this.groupBoxMIDI.PerformLayout();
 			this.groupBoxTwitch.ResumeLayout(false);
 			this.groupBoxTwitch.PerformLayout();
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
 
         }
@@ -241,5 +267,7 @@
         private System.Windows.Forms.TextBox txtBoxTwitchLogin;
         private System.Windows.Forms.Button BtnRequestTwitchLogin;
         private System.Windows.Forms.Button BtnRequestTwitchLogout;
-    }
+		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.CheckBox chkConfirmKeybindDeletions;
+	}
 }

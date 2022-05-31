@@ -29,7 +29,9 @@ namespace MidiControl
             txtBoxDelay.Text = options.options.Delay.ToString();
 
             txtBoxTwitchLogin.Text = options.options.TwitchLogin;
-        }
+
+			chkConfirmKeybindDeletions.Checked = options.options.ConfirmKeybindDeletion;
+		}
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
@@ -51,7 +53,9 @@ namespace MidiControl
                 options.options.Delay = 0;
             }
 
-            options.Save();
+			options.options.ConfirmKeybindDeletion = chkConfirmKeybindDeletions.Checked;
+
+			options.Save();
             this.Close();
             this.Dispose();
         }
