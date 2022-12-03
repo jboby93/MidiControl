@@ -40,6 +40,8 @@
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
 			this.MidiControlOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.InterfaceOptionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuArturiaEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuNIControllerEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.gitHubProjectPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
@@ -51,7 +53,7 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnAddKeybind = new System.Windows.Forms.ToolStripButton();
 			this.btnStopAllSounds = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.sepSelectedKeybind = new System.Windows.Forms.ToolStripSeparator();
 			this.menuViewAsDropdown = new System.Windows.Forms.ToolStripDropDownButton();
 			this.menuViewAsIcons = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuViewAsList = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +78,9 @@
 			this.listKeybinds = new System.Windows.Forms.ListView();
 			this.colKeybind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colOverview = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.mnuNIControllerEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.butEditSelectedKeybind = new System.Windows.Forms.ToolStripButton();
+			this.butDeleteSelectedKeybind = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStrip1.SuspendLayout();
 			this.trayMenuStrip.SuspendLayout();
 			this.statusBar.SuspendLayout();
@@ -94,7 +98,10 @@
             this.toolStripSeparator2,
             this.btnAddKeybind,
             this.btnStopAllSounds,
-            this.toolStripSeparator3,
+            this.sepSelectedKeybind,
+            this.butEditSelectedKeybind,
+            this.butDeleteSelectedKeybind,
+            this.toolStripSeparator4,
             this.menuViewAsDropdown});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
@@ -112,6 +119,7 @@
             this.toolStripMenuItem5,
             this.MidiControlOptionsToolStripMenuItem,
             this.InterfaceOptionsMenuItem,
+            this.mnuArturiaEditor,
             this.mnuNIControllerEditor,
             this.toolStripMenuItem3,
             this.gitHubProjectPageToolStripMenuItem,
@@ -136,7 +144,7 @@
             this.toolStripMenuItem6,
             this.profileListHereToolStripMenuItem});
 			this.menuProfiles.Name = "menuProfiles";
-			this.menuProfiles.Size = new System.Drawing.Size(217, 22);
+			this.menuProfiles.Size = new System.Drawing.Size(260, 22);
 			this.menuProfiles.Text = "Profiles";
 			// 
 			// createNewToolStripMenuItem
@@ -210,52 +218,66 @@
 			this.addKeybindToolStripMenuItem.Image = global::MidiControl.Properties.Resources.plus;
 			this.addKeybindToolStripMenuItem.Name = "addKeybindToolStripMenuItem";
 			this.addKeybindToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.addKeybindToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.addKeybindToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
 			this.addKeybindToolStripMenuItem.Text = "Add keybind...";
 			this.addKeybindToolStripMenuItem.Click += new System.EventHandler(this.AddKeybindItemClicked);
 			// 
 			// toolStripMenuItem5
 			// 
 			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-			this.toolStripMenuItem5.Size = new System.Drawing.Size(214, 6);
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(257, 6);
 			// 
 			// MidiControlOptionsToolStripMenuItem
 			// 
 			this.MidiControlOptionsToolStripMenuItem.Image = global::MidiControl.Properties.Resources.settings;
 			this.MidiControlOptionsToolStripMenuItem.Name = "MidiControlOptionsToolStripMenuItem";
-			this.MidiControlOptionsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.MidiControlOptionsToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
 			this.MidiControlOptionsToolStripMenuItem.Text = "MIDIControl options...";
 			this.MidiControlOptionsToolStripMenuItem.Click += new System.EventHandler(this.MidiControlOptionsToolStripMenuItem_Click);
 			// 
 			// InterfaceOptionsMenuItem
 			// 
 			this.InterfaceOptionsMenuItem.Name = "InterfaceOptionsMenuItem";
-			this.InterfaceOptionsMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.InterfaceOptionsMenuItem.Size = new System.Drawing.Size(260, 22);
 			this.InterfaceOptionsMenuItem.Text = "Interface options...";
 			this.InterfaceOptionsMenuItem.Click += new System.EventHandler(this.InterfaceOptionsMenuItem_Click);
+			// 
+			// mnuArturiaEditor
+			// 
+			this.mnuArturiaEditor.Name = "mnuArturiaEditor";
+			this.mnuArturiaEditor.Size = new System.Drawing.Size(260, 22);
+			this.mnuArturiaEditor.Text = "Open Arturia MIDI Control Center...";
+			this.mnuArturiaEditor.Click += new System.EventHandler(this.OpenArturiaEditor_Clicked);
+			// 
+			// mnuNIControllerEditor
+			// 
+			this.mnuNIControllerEditor.Name = "mnuNIControllerEditor";
+			this.mnuNIControllerEditor.Size = new System.Drawing.Size(260, 22);
+			this.mnuNIControllerEditor.Text = "Open NI Controller Editor...";
+			this.mnuNIControllerEditor.Click += new System.EventHandler(this.OpenNIControllerEditor_Clicked);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(214, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(257, 6);
 			// 
 			// gitHubProjectPageToolStripMenuItem
 			// 
 			this.gitHubProjectPageToolStripMenuItem.Name = "gitHubProjectPageToolStripMenuItem";
-			this.gitHubProjectPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.gitHubProjectPageToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
 			this.gitHubProjectPageToolStripMenuItem.Text = "GitHub project page";
 			this.gitHubProjectPageToolStripMenuItem.Click += new System.EventHandler(this.gitHubProjectPageToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem7
 			// 
 			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-			this.toolStripMenuItem7.Size = new System.Drawing.Size(214, 6);
+			this.toolStripMenuItem7.Size = new System.Drawing.Size(257, 6);
 			// 
 			// closeToTrayToolStripMenuItem
 			// 
 			this.closeToTrayToolStripMenuItem.Name = "closeToTrayToolStripMenuItem";
 			this.closeToTrayToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-			this.closeToTrayToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.closeToTrayToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
 			this.closeToTrayToolStripMenuItem.Text = "Close to tray";
 			this.closeToTrayToolStripMenuItem.Click += new System.EventHandler(this.closeToTrayToolStripMenuItem_Click);
 			// 
@@ -264,7 +286,7 @@
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
 			this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.Q)));
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -319,10 +341,11 @@
 			this.btnStopAllSounds.Text = "Stop all sounds";
 			this.btnStopAllSounds.Click += new System.EventHandler(this.StopAllSoundsClicked);
 			// 
-			// toolStripSeparator3
+			// sepSelectedKeybind
 			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			this.sepSelectedKeybind.Name = "sepSelectedKeybind";
+			this.sepSelectedKeybind.Size = new System.Drawing.Size(6, 25);
+			this.sepSelectedKeybind.Visible = false;
 			// 
 			// menuViewAsDropdown
 			// 
@@ -525,6 +548,7 @@
 			this.listKeybinds.TabIndex = 5;
 			this.listKeybinds.UseCompatibleStateImageBehavior = false;
 			this.listKeybinds.View = System.Windows.Forms.View.Tile;
+			this.listKeybinds.SelectedIndexChanged += new System.EventHandler(this.listKeybinds_SelectedIndexChanged);
 			this.listKeybinds.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listKeybinds_KeyDown);
 			this.listKeybinds.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listKeybinds_MouseClick);
 			this.listKeybinds.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listKeybinds_MouseDoubleClick);
@@ -539,12 +563,32 @@
 			this.colOverview.Text = "Overview";
 			this.colOverview.Width = 355;
 			// 
-			// mnuNIControllerEditor
+			// butEditSelectedKeybind
 			// 
-			this.mnuNIControllerEditor.Name = "mnuNIControllerEditor";
-			this.mnuNIControllerEditor.Size = new System.Drawing.Size(217, 22);
-			this.mnuNIControllerEditor.Text = "Open NI Controller Editor...";
-			this.mnuNIControllerEditor.Click += new System.EventHandler(this.OpenNIControllerEditor_Clicked);
+			this.butEditSelectedKeybind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.butEditSelectedKeybind.Image = global::MidiControl.Properties.Resources.edit;
+			this.butEditSelectedKeybind.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.butEditSelectedKeybind.Name = "butEditSelectedKeybind";
+			this.butEditSelectedKeybind.Size = new System.Drawing.Size(23, 22);
+			this.butEditSelectedKeybind.Text = "Edit [keybind]";
+			this.butEditSelectedKeybind.Visible = false;
+			this.butEditSelectedKeybind.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+			// 
+			// butDeleteSelectedKeybind
+			// 
+			this.butDeleteSelectedKeybind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.butDeleteSelectedKeybind.Image = global::MidiControl.Properties.Resources.minus;
+			this.butDeleteSelectedKeybind.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.butDeleteSelectedKeybind.Name = "butDeleteSelectedKeybind";
+			this.butDeleteSelectedKeybind.Size = new System.Drawing.Size(23, 22);
+			this.butDeleteSelectedKeybind.Text = "Delete [keybind]";
+			this.butDeleteSelectedKeybind.Visible = false;
+			this.butDeleteSelectedKeybind.Click += new System.EventHandler(this.DeleteKeybindMenuItem_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
 			// 
 			// MIDIControlGUI2
 			// 
@@ -606,7 +650,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripSeparator sepSelectedKeybind;
 		private System.Windows.Forms.ToolStripDropDownButton menuViewAsDropdown;
 		private System.Windows.Forms.ToolStripMenuItem menuViewAsIcons;
 		private System.Windows.Forms.ToolStripMenuItem menuViewAsList;
@@ -625,5 +669,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem SwitchProfileTrayMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mnuNIControllerEditor;
+        private System.Windows.Forms.ToolStripMenuItem mnuArturiaEditor;
+		private System.Windows.Forms.ToolStripButton butEditSelectedKeybind;
+		private System.Windows.Forms.ToolStripButton butDeleteSelectedKeybind;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 	}
 }

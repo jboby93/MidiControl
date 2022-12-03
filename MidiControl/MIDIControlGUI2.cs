@@ -21,6 +21,7 @@ namespace MidiControl {
 		private bool windowWasShown = false;
 
 		private string NIControllerEditorEXEPath = @"C:\Program Files\Native Instruments\Controller Editor\Controller Editor.exe";
+		//private string ArturiaEditorEXEPath = @"C:\Program Files (x86)\Arturia\MIDI Control Center\MIDI Control Center.exe"; // file not found even when it exists???
 
 		private const string STATIC_PROFILEMENU_TAG = "#STATIC_PROFILE_MENU_ITEM#";
 
@@ -80,9 +81,12 @@ namespace MidiControl {
 				mnuNIControllerEditor.Visible = false;
 			}
 
-			// (if other device manufacturers have MIDI controller editor apps, they can be added in a similar way for convenience to the user :) )
-			//
-		}
+            // (if other device manufacturers have MIDI controller editor apps, they can be added in a similar way for convenience to the user :) )
+			// except for arturia before for some reason it can't find the very existant file here (maybe i'm overlooking something simple...)
+            //if(!System.IO.File.Exists(ArturiaEditorEXEPath)) {
+			mnuArturiaEditor.Visible = false;
+            //}
+        }
 
 		// theme support functions
         private ThemeSupport.MidiControlTheme GetCurrentTheme() {
@@ -116,9 +120,9 @@ namespace MidiControl {
 
             // set icons
 			btnSaveCurrentProfile.Image = saveCurrentProfileToolStripMenuItem.Image = mcTheme.SaveIcon;
-			editToolStripMenuItem.Image = mcTheme.EditIcon;
+			editToolStripMenuItem.Image = butEditSelectedKeybind.Image = mcTheme.EditIcon;
 			btnDeleteCurrentProfile.Image = deleteCurrentProfileToolStripMenuItem.Image = mcTheme.DeleteIcon;
-			deleteToolStripMenuItem.Image = mcTheme.MinusIcon;
+			deleteToolStripMenuItem.Image = butDeleteSelectedKeybind.Image = mcTheme.MinusIcon;
 			btnAddKeybind.Image = addKeybindToolStripMenuItem.Image = mcTheme.PlusIcon;
 			btnStopAllSounds.Image = mcTheme.MuteIcon;
 			MidiControlOptionsToolStripMenuItem.Image = mcTheme.SettingsIcon;
@@ -143,6 +147,7 @@ namespace MidiControl {
 			keybindIconList.Images.Add("knob", mcTheme.ControlKnobIcon);
             
 			ReloadEntries();
+			sepSelectedKeybind.Visible = butEditSelectedKeybind.Visible = butDeleteSelectedKeybind.Visible = false;
 
             listKeybinds.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
 		}
@@ -484,11 +489,19 @@ namespace MidiControl {
 			menuViewAsDropdown.Text = "View as: " + label;
 		}
 
-		private void listKeybinds_MouseClick(object sender, MouseEventArgs e) {
+		private void listKeybinds_MouseClick(object sender, MouseEventArgs e) {			
 			if(e.Button == MouseButtons.Right) {
 				if(listKeybinds.SelectedItems.Count == 1) {
 					itemContextMenu.Show(listKeybinds, e.Location);
 				}
+			}
+		}
+
+		private void listKeybinds_SelectedIndexChanged(object sender, EventArgs e) {
+			sepSelectedKeybind.Visible = butEditSelectedKeybind.Visible = butDeleteSelectedKeybind.Visible = (listKeybinds.SelectedItems.Count == 1);
+			if(listKeybinds.SelectedItems.Count == 1) {
+				butEditSelectedKeybind.Text = "Edit '" + listKeybinds.SelectedItems[0].Text + "'";
+				butDeleteSelectedKeybind.Text = "Delete '" + listKeybinds.SelectedItems[0].Text + "'";
 			}
 		}
 
@@ -666,6 +679,10 @@ namespace MidiControl {
 
 		private void OpenNIControllerEditor_Clicked(object sender, EventArgs e) {
 			System.Diagnostics.Process.Start(NIControllerEditorEXEPath);
+		}
+
+		private void OpenArturiaEditor_Clicked(object sender, EventArgs e) {
+			//System.Diagnostics.Process.Start(ArturiaEditorEXEPath);
 		}
 	}
 }
