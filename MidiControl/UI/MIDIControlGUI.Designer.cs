@@ -80,6 +80,7 @@
 			this.listKeybinds = new System.Windows.Forms.ListView();
 			this.colKeybind = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.colOverview = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip1.SuspendLayout();
 			this.trayMenuStrip.SuspendLayout();
 			this.statusBar.SuspendLayout();
@@ -120,6 +121,7 @@
             this.InterfaceOptionsMenuItem,
             this.mnuNIControllerEditor,
             this.toolStripMenuItem3,
+            this.checkForUpdatesToolStripMenuItem,
             this.gitHubProjectPageToolStripMenuItem,
             this.toolStripMenuItem7,
             this.closeToTrayToolStripMenuItem,
@@ -581,6 +583,13 @@
 			this.colOverview.Text = "Overview";
 			this.colOverview.Width = 355;
 			// 
+			// checkForUpdatesToolStripMenuItem
+			// 
+			this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+			this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
+			this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+			// 
 			// MIDIControlGUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -663,5 +672,6 @@
 		private System.Windows.Forms.ToolStripSeparator sepSelectedKeybind;
 		private System.Windows.Forms.ToolStripButton butEditSelectedKeybind;
 		private System.Windows.Forms.ToolStripButton butDeleteSelectedKeybind;
+		private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
 	}
 }

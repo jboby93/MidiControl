@@ -38,6 +38,7 @@ namespace MidiControl
 			chkConfirmDeleteKeybind.Checked = options.options.ConfirmKeybindDeletion;
 			chkConfirmDeleteProfile.Checked = options.options.ConfirmProfileDeletion;
 			cboToolbarPosition.SelectedIndex = options.options.ToolbarPosition;
+			chkCheckForUpdatesOnStartup.Checked = options.options.CheckForUpdatesOnStartup;
 
 			cboTheme.Items.Clear();
 			cboTheme.Items.AddRange(ThemeSupport.GetThemesList());
@@ -93,6 +94,7 @@ namespace MidiControl
 			options.options.ConfirmProfileDeletion = chkConfirmDeleteProfile.Checked;
 			options.options.ToolbarPosition = cboToolbarPosition.SelectedIndex;
 			options.options.Theme = cboTheme.SelectedIndex;
+			options.options.CheckForUpdatesOnStartup = chkCheckForUpdatesOnStartup.Checked;
 
             options.Save();
             this.Close();

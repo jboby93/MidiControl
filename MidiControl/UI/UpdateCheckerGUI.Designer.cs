@@ -1,4 +1,4 @@
-﻿namespace MidiControl.UI {
+﻿namespace MidiControl {
 	partial class UpdateCheckerGUI {
 		/// <summary>
 		/// Required designer variable.

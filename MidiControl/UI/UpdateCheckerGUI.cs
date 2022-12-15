@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace MidiControl.UI {
+namespace MidiControl {
 	public partial class UpdateCheckerGUI : Form {
 		public UpdateCheckerGUI() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MIDIControlGUI));

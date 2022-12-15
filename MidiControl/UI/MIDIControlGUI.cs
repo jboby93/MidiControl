@@ -104,11 +104,11 @@ namespace MidiControl {
 			//
 
 			// did we do the first-time prompt for self-updating?
-			//if(!options.options.DidPromptForUpdateChecking) {
-			//	options.options.CheckForUpdatesOnStartup = (MessageBox.Show("prompt", "Allow checking for updates?", MessageBoxButtons.YesNo, //MessageBoxIcon.Question) == DialogResult.Yes);
-			//	options.options.DidPromptForUpdateChecking = true;
-			//	options.Save();
-			//}
+			if(!options.options.DidPromptForUpdateChecking) {
+				options.options.CheckForUpdatesOnStartup = (MessageBox.Show("prompt", "Allow checking for updates?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+				options.options.DidPromptForUpdateChecking = true;
+				options.Save();
+			}
 		}
 
 		// theme support functions
@@ -706,6 +706,22 @@ namespace MidiControl {
 
 		private void OpenNIControllerEditor_Clicked(object sender, EventArgs e) {
 			System.Diagnostics.Process.Start(NIControllerEditorEXEPath);
+		}
+
+		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e) {
+			using(var updategui = new UpdateCheckerGUI()) {
+				// dialogresult:
+				// yes: update was downloaded, and user chose to install it immediately
+				//		- need to close the form and get the program exiting, and then launch the downloaded setup
+				// ok: update was downloaded
+				// cancel: user declined the update
+				// no: no update is available
+				//
+				// only one that really needs handled in any way is 'yes'
+				if(updategui.ShowDialog() == DialogResult.Yes) {
+
+				}
+			}
 		}
 	}
 }
