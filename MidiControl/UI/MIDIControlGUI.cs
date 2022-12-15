@@ -19,6 +19,7 @@ namespace MidiControl {
 
 		private bool actuallyClosing = false;
 		private bool windowWasShown = false;
+		private bool checkedForUpdatesAtLaunch = false;
 
 		private string NIControllerEditorEXEPath = @"C:\Program Files\Native Instruments\Controller Editor\Controller Editor.exe";
 
@@ -105,7 +106,7 @@ namespace MidiControl {
 
 			// did we do the first-time prompt for self-updating?
 			if(!options.options.DidPromptForUpdateChecking) {
-				options.options.CheckForUpdatesOnStartup = (MessageBox.Show("prompt", "Allow checking for updates?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+				options.options.CheckForUpdatesOnStartup = (MessageBox.Show("This program can automatically check for updates on startup.  By default, this is disabled.  Would you like to enable it?  If you choose No, you can check for updates manually from the Menu.", "Allow checking for updates?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
 				options.options.DidPromptForUpdateChecking = true;
 				options.Save();
 			}
@@ -228,6 +229,13 @@ namespace MidiControl {
 			// if the program started to tray, kill the main app thread since it was started without being linked to the window
 			if(Program.StartedToTray) {
 				Application.Exit();
+			}
+		}
+
+		private void MIDIControlGUI_Shown(object sender, EventArgs e) {
+			if(options.options.CheckForUpdatesOnStartup && !this.checkedForUpdatesAtLaunch) {
+				checkForUpdatesToolStripMenuItem_Click(this, EventArgs.Empty);
+				this.checkedForUpdatesAtLaunch = true;
 			}
 		}
 

@@ -170,6 +170,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GithubReleasesAPIResponse.cs" />
     <Compile Include="GoXLRControl.cs" />
     <Compile Include="AudioControl.cs" />
     <Compile Include="IExternalControl.cs" />

@@ -12,6 +12,9 @@ namespace MidiControl
 
 		public static bool StartedToTray = false;
 
+		public static readonly int obsVersion = 27;
+		public static readonly string urlUpdates = "https://api.github.com/repos/Etuldan/MidiControl/releases";
+
         /// <summary>
         /// Point d'entrée principal de l'application.
         /// </summary>

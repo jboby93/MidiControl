@@ -603,6 +603,7 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MIDIControlGUI_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MIDIControlGUI_FormClosed);
 			this.Load += new System.EventHandler(this.MIDIControlGUI2_Load);
+			this.Shown += new System.EventHandler(this.MIDIControlGUI_Shown);
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			this.trayMenuStrip.ResumeLayout(false);
