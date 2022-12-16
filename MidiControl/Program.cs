@@ -12,10 +12,13 @@ namespace MidiControl
 
 		public static bool StartedToTray = false;
 
-        /// <summary>
-        /// Point d'entrée principal de l'application.
-        /// </summary>
-        [STAThread]
+		public static readonly int obsVersion = 28;
+		public static readonly string urlUpdates = "https://api.github.com/repos/Etuldan/MidiControl/releases";
+
+		/// <summary>
+		/// Point d'entrée principal de l'application.
+		/// </summary>
+		[STAThread]
         static void Main()
         {
 #if DEBUG

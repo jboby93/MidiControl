@@ -18,6 +18,7 @@ namespace MidiControl {
 
 		private bool actuallyClosing = false;
 		private bool windowWasShown = false;
+		private bool checkedForUpdatesAtLaunch = false;
 
 		private readonly string NIControllerEditorEXEPath = @"C:\Program Files\Native Instruments\Controller Editor\Controller Editor.exe";
 
@@ -101,6 +102,13 @@ namespace MidiControl {
 
 			// (if other device manufacturers have MIDI controller editor apps, they can be added in a similar way for convenience to the user :) )
 			//
+
+			// did we do the first-time prompt for self-updating?
+			if(!options.options.DidPromptForUpdateChecking) {
+				options.options.CheckForUpdatesOnStartup = (MessageBox.Show("This program can automatically check for updates on startup.  By default, this is disabled.  Would you like to enable it?  If you choose No, you can check for updates manually from the Menu.", "Allow checking for updates?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+				options.options.DidPromptForUpdateChecking = true;
+				options.Save();
+			}
 		}
 
 		// theme support functions
@@ -220,6 +228,13 @@ namespace MidiControl {
 			}
 		}
 
+		private void MIDIControlGUI_Shown(object sender, EventArgs e) {
+			if(options.options.CheckForUpdatesOnStartup && !this.checkedForUpdatesAtLaunch) {
+				this.checkedForUpdatesAtLaunch = true;
+				checkForUpdatesToolStripMenuItem_Click(this, EventArgs.Empty);
+			}
+		}
+
 		private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
 			if(e.Button == MouseButtons.Left) {
 				Show();
@@ -251,7 +266,7 @@ namespace MidiControl {
 		}
 
 		private void RefreshWindowTitle() {
-			Text = trayIcon.Text = "MIDIControl (for OBS 28) - [" + conf.CurrentProfile + (conf.Unsaved?"*":"") + "]";
+			Text = trayIcon.Text = "MIDIControl (for OBS " + Program.obsVersion + ") - [" + conf.CurrentProfile + (conf.Unsaved?"*":"") + "]";
 		}
 
 		// delegate handlers; from MIDIControlGUI; config/profiles/keybind refresh
@@ -690,6 +705,22 @@ namespace MidiControl {
 
 		private void OpenNIControllerEditor_Clicked(object sender, EventArgs e) {
 			System.Diagnostics.Process.Start(NIControllerEditorEXEPath);
+		}
+
+		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e) {
+			using(var updategui = new UpdateCheckerGUI()) {
+				// dialogresult:
+				// yes: update was downloaded, and user chose to install it immediately
+				//		- need to close the form and get the program exiting, and then launch the downloaded setup
+				// ok: update was downloaded
+				// cancel: user declined the update
+				// no: no update is available
+				//
+				// only one that really needs handled in any way is 'yes'
+				if(updategui.ShowDialog() == DialogResult.Yes) {
+
+				}
+			}
 		}
 	}
 }
