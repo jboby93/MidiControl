@@ -60,6 +60,7 @@
 			this.treeView1 = new System.Windows.Forms.TreeView();
 			this.pnlInterface = new System.Windows.Forms.Panel();
 			this.button1 = new System.Windows.Forms.Button();
+			this.chkCheckForUpdatesOnStartup = new System.Windows.Forms.CheckBox();
 			this.groupBoxOBS.SuspendLayout();
 			this.groupBoxMIDI.SuspendLayout();
 			this.groupBoxTwitch.SuspendLayout();
@@ -251,6 +252,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.chkCheckForUpdatesOnStartup);
 			this.groupBox1.Controls.Add(this.label3);
 			this.groupBox1.Controls.Add(this.cboTheme);
 			this.groupBox1.Controls.Add(this.cboToolbarPosition);
@@ -260,7 +262,7 @@
 			this.groupBox1.Controls.Add(this.chkAlwaysOnTop);
 			this.groupBox1.Location = new System.Drawing.Point(12, 3);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(230, 145);
+			this.groupBox1.Size = new System.Drawing.Size(230, 168);
 			this.groupBox1.TabIndex = 4;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "General";
@@ -268,7 +270,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 94);
+			this.label3.Location = new System.Drawing.Point(3, 116);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(43, 13);
 			this.label3.TabIndex = 6;
@@ -282,7 +284,7 @@
             "Default (light)",
             "Dark",
             "Office 2007 Blue"});
-			this.cboTheme.Location = new System.Drawing.Point(94, 91);
+			this.cboTheme.Location = new System.Drawing.Point(94, 113);
 			this.cboTheme.Name = "cboTheme";
 			this.cboTheme.Size = new System.Drawing.Size(130, 21);
 			this.cboTheme.TabIndex = 5;
@@ -294,7 +296,7 @@
 			this.cboToolbarPosition.Items.AddRange(new object[] {
             "Top",
             "Bottom"});
-			this.cboToolbarPosition.Location = new System.Drawing.Point(94, 118);
+			this.cboToolbarPosition.Location = new System.Drawing.Point(94, 140);
 			this.cboToolbarPosition.Name = "cboToolbarPosition";
 			this.cboToolbarPosition.Size = new System.Drawing.Size(130, 21);
 			this.cboToolbarPosition.TabIndex = 4;
@@ -302,7 +304,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(3, 121);
+			this.label2.Location = new System.Drawing.Point(3, 143);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(85, 13);
 			this.label2.TabIndex = 3;
@@ -386,6 +388,7 @@
 			// 
 			// button1
 			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.button1.Location = new System.Drawing.Point(325, 266);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
@@ -393,6 +396,16 @@
 			this.button1.Text = "Cancel";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.CancelPressed);
+			// 
+			// chkCheckForUpdatesOnStartup
+			// 
+			this.chkCheckForUpdatesOnStartup.AutoSize = true;
+			this.chkCheckForUpdatesOnStartup.Location = new System.Drawing.Point(6, 88);
+			this.chkCheckForUpdatesOnStartup.Name = "chkCheckForUpdatesOnStartup";
+			this.chkCheckForUpdatesOnStartup.Size = new System.Drawing.Size(163, 17);
+			this.chkCheckForUpdatesOnStartup.TabIndex = 7;
+			this.chkCheckForUpdatesOnStartup.Text = "Check for updates on startup";
+			this.chkCheckForUpdatesOnStartup.UseVisualStyleBackColor = true;
 			// 
 			// OptionsGUI
 			// 
@@ -460,5 +473,6 @@
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Panel pnlInterface;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.CheckBox chkCheckForUpdatesOnStartup;
 	}
 }
