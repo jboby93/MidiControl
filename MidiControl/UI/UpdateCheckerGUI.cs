@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 #if DEBUG
 using System.Diagnostics;
@@ -37,98 +38,135 @@ namespace MidiControl {
 			this.Size = this.progressSize;
 			this.Show();
 
-			// check for updates here
+			Task.Run(() => {
+				// check for updates here
 #if DEBUG
-			Debug.WriteLine("Checking for updates... url = " + Program.urlUpdates);
-			Debug.WriteLine("current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion);
+				Debug.WriteLine("Checking for updates... url = " + Program.urlUpdates);
+				Debug.WriteLine("current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion);
 #endif
 
-			using(var http = new WebClient()) {
-				//http.Proxy = System.Net.WebRequest.DefaultWebProxy;
-				//http.Credentials = System.Net.CredentialCache.DefaultCredentials;
-				http.UseDefaultCredentials = true;
-				//http.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
-				http.Headers["User-Agent"] = "Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0) (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+				using(var http = new WebClient()) {
+					//http.Proxy = System.Net.WebRequest.DefaultWebProxy;
+					//http.Credentials = System.Net.CredentialCache.DefaultCredentials;
+					http.UseDefaultCredentials = true;
+					//http.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
+					http.Headers["User-Agent"] = "Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0) (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
 
-				string json;
+					string json;
 
-				try {
-					http.Timeout = 5000; // 5 second timeout instead of the default
-					json = http.DownloadString(Program.urlUpdates);
-				} catch(System.Net.WebException ex) {
-					this.Size = this.normalSize;
-					this.FormBorderStyle = FormBorderStyle.Sizable;
-					progressBar1.Visible = false;
+					try {
+						http.Timeout = 5000; // 5 second timeout instead of the default
+						json = http.DownloadString(Program.urlUpdates);
+					} catch(System.Net.WebException ex) {
+						//this.Size = this.normalSize;
+						//this.FormBorderStyle = FormBorderStyle.Sizable;
+						//progressBar1.Visible = false;
+	
+						//grpBox.Text = "Unable to check for updates";
+						//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
 
-					grpBox.Text = "Unable to check for updates";
-					txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
+						DisplayResults("Unable to check for updates", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, "Updates", 1);
 
-					http.Dispose();
+						http.Dispose();
 
-					return;
-				}
+						return;
+					}	
 
-				this.Size = this.normalSize;
-				this.FormBorderStyle = FormBorderStyle.Sizable;
-				progressBar1.Visible = false;
+					//this.Size = this.normalSize;
+					//this.FormBorderStyle = FormBorderStyle.Sizable;
+					//progressBar1.Visible = false;
 
-				// attempt to parse the result
+					// attempt to parse the result
 #if DEBUG
-				Debug.WriteLine("json = \n" + json);
+					Debug.WriteLine("json = \n" + json);
 #endif
-				List<GithubReleasesAPIResponse.Root> data = new List<GithubReleasesAPIResponse.Root>();
-				try {
-					data = JsonConvert.DeserializeObject<List<GithubReleasesAPIResponse.Root>>(json);
-				} catch(Exception ex) {
-					grpBox.Text = "Error parsing received data";
-					txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
+					List<GithubReleasesAPIResponse.Root> data = new List<GithubReleasesAPIResponse.Root>();
+					try {
+						data = JsonConvert.DeserializeObject<List<GithubReleasesAPIResponse.Root>>(json);
+					} catch(Exception ex) {
+							//grpBox.Text = "Error parsing received data";
+							//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
+							DisplayResults("Error parsing received data", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, "Updates", 1);
+						return;
+					}
 
-					return;
-				}
+					// each element in data is a .Root object, denoting a single release
+					// need to look at:
+					// .Root.TagName - the release tag containing the version number to compare against
+					// .Root.Url - the URL pointing to that release (for opening in a browser)
+					// .Root.Name - release's name
+					// .Root.PublishedAt - the date/time the release was posted
+					// .Root.Body - the release notes
 
-				// each element in data is a .Root object, denoting a single release
-				// need to look at:
-				// .Root.TagName - the release tag containing the version number to compare against
-				// .Root.Url - the URL pointing to that release (for opening in a browser)
-				// .Root.Name - release's name
-				// .Root.PublishedAt - the date/time the release was posted
-				// .Root.Body - the release notes
+					// this should all be enclosed in a loop probably, but for now, just check the first one
 
-				// this should all be enclosed in a loop probably, but for now, just check the first one
+					var currentVersion = ParseVersionString(Application.ProductVersion);
+					var releaseVersion = ParseVersionString(data[0].TagName.Replace("v", ""));
 
-				var currentVersion = ParseVersionString(Application.ProductVersion);
-				var releaseVersion = ParseVersionString(data[0].TagName.Replace("v", ""));
-
-				// check major version; update if newer, otherwise match and check deeper
-				if(releaseVersion[0] > currentVersion[0]) {
-					updateFound = true;
-				} else if(releaseVersion[0] == currentVersion[0]) {
-					// minor
-					if(releaseVersion[1] > currentVersion[1]) {
+					// check major version; update if newer, otherwise match and check deeper
+					if(releaseVersion[0] > currentVersion[0]) {
 						updateFound = true;
-					} else if(releaseVersion[1] == currentVersion[1]) {
-						if(releaseVersion[2] > currentVersion[2]) {
+					} else if(releaseVersion[0] == currentVersion[0]) {
+						// minor
+						if(releaseVersion[1] > currentVersion[1]) {
 							updateFound = true;
-						} else if(releaseVersion[2] == currentVersion[2]) {
-							if(releaseVersion[3] > currentVersion[3]) {
+						} else if(releaseVersion[1] == currentVersion[1]) {
+							if(releaseVersion[2] > currentVersion[2]) {
 								updateFound = true;
+							} else if(releaseVersion[2] == currentVersion[2]) {
+								if(releaseVersion[3] > currentVersion[3]) {
+									updateFound = true;
+								}
 							}
 						}
 					}
+
+					if(updateFound) {
+						//grpBox.Text = "An update is available!";
+						var releaseNotes = data[0].Name + "\r\n" + data[0].PublishedAt + "\r\n\r\n" + data[0].Body;
+						//txtReleaseNotes.Text = data[0].Name + "\r\n" + data[0].PublishedAt + "\r\n\r\n" + data[0].Body;
+						var title = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
+						//this.Text = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
+						//btnDownload.Enabled = true;
+						DisplayResults("An update is available!", releaseNotes, title, 0);
+					} else {
+						//grpBox.Text = "No updates are available at this time.";
+						//txtReleaseNotes.Text = "You are currently on the latest version :)";
+
+						//this.Text = "Up to date - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
+						DisplayResults("No updates are available at this time.", "You are already on the latest version :)", "Updates", 1);
+					}
 				}
+			});
+		}
 
-				if(updateFound) {
-					grpBox.Text = "An update is available!";
-					txtReleaseNotes.Text = data[0].Name + "\r\n" + data[0].PublishedAt + "\r\n\r\n" + data[0].Body;
+		private void DisplayResults(string caption, string body, string title, int layout) {
+			if(InvokeRequired) {
+				Invoke((Action<string, string, string, int>) DisplayResults, caption, body, title, layout);
+				return;
+			}
 
-					this.Text = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
+			this.Text = title;
+
+			this.Size = this.normalSize;
+			this.FormBorderStyle = FormBorderStyle.Sizable;
+			progressBar1.Visible = false;
+
+			grpBox.Text = caption;
+			txtReleaseNotes.Text = body;
+
+			// 0 - show download button
+			// 1 - Close button only
+			switch(layout) {
+				case 0:
+					btnDownload.Visible = true;
 					btnDownload.Enabled = true;
-				} else {
-					grpBox.Text = "No updates are available at this time.";
-					txtReleaseNotes.Text = "You are currently on the latest version :)";
-
-					this.Text = "Up to date - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
-				}
+					break;
+				case 1:
+					btnDownload.Visible = false;
+					btnDownload.Enabled = false;
+					btnCancel.Text = "Close";
+					break;
 			}
 		}
 
