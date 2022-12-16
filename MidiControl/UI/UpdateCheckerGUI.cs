@@ -38,6 +38,8 @@ namespace MidiControl {
 			this.Size = this.progressSize;
 			this.Show();
 
+			var title = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
+
 			// (https://stackoverflow.com/questions/19028374/accessing-ui-controls-in-task-run-with-async-await-on-winforms/25903258#25903258)
 			Task.Run(() => {
 				// check for updates here
@@ -62,16 +64,16 @@ namespace MidiControl {
 						//this.Size = this.normalSize;
 						//this.FormBorderStyle = FormBorderStyle.Sizable;
 						//progressBar1.Visible = false;
-	
+
 						//grpBox.Text = "Unable to check for updates";
 						//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
 
-						DisplayResults("Unable to check for updates", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, "Updates", 1);
+						DisplayResults("Unable to check for updates", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, title, 1);
 
 						http.Dispose();
 
 						return;
-					}	
+					}
 
 					//this.Size = this.normalSize;
 					//this.FormBorderStyle = FormBorderStyle.Sizable;
@@ -85,9 +87,9 @@ namespace MidiControl {
 					try {
 						data = JsonConvert.DeserializeObject<List<GithubReleasesAPIResponse.Root>>(json);
 					} catch(Exception ex) {
-							//grpBox.Text = "Error parsing received data";
-							//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
-							DisplayResults("Error parsing received data", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, "Updates", 1);
+						//grpBox.Text = "Error parsing received data";
+						//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
+						DisplayResults("Error parsing received data", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, title, 1);
 						return;
 					}
 
@@ -102,31 +104,30 @@ namespace MidiControl {
 					// this should all be enclosed in a loop probably, but for now, just check the first one
 
 					var currentVersion = ParseVersionString(Application.ProductVersion);
-					var releaseVersion = ParseVersionString(data[0].TagName.Replace("v", ""));
+					//var releaseVersion = ParseVersionString(data[0].TagName.Replace("v", ""));
+
+					int mostRecent = -1;
+					int[] releaseVersion = currentVersion;
 
 					// check major version; update if newer, otherwise match and check deeper
-					if(releaseVersion[0] > currentVersion[0]) {
-						updateFound = true;
-					} else if(releaseVersion[0] == currentVersion[0]) {
-						// minor
-						if(releaseVersion[1] > currentVersion[1]) {
+					for(int i = 0; i < data.Count; i++) {
+						int[] rv = ParseVersionString(data[i].TagName.Replace("v", ""));
+
+						if(versionIsNewer(rv, releaseVersion)) {
+							mostRecent = i;
+							releaseVersion = rv;
 							updateFound = true;
-						} else if(releaseVersion[1] == currentVersion[1]) {
-							if(releaseVersion[2] > currentVersion[2]) {
-								updateFound = true;
-							} else if(releaseVersion[2] == currentVersion[2]) {
-								if(releaseVersion[3] > currentVersion[3]) {
-									updateFound = true;
-								}
-							}
 						}
 					}
 
+#if DEBUG
+					Debug.WriteLine("- most recent version available is: " + String.Join(".", releaseVersion));
+#endif
+
 					if(updateFound) {
 						//grpBox.Text = "An update is available!";
-						var releaseNotes = data[0].Name + "\r\n" + data[0].PublishedAt + "\r\n\r\n" + data[0].Body;
+						var releaseNotes = data[mostRecent].Name + "\r\n" + data[mostRecent].PublishedAt + "\r\n\r\n" + data[mostRecent].Body;
 						//txtReleaseNotes.Text = data[0].Name + "\r\n" + data[0].PublishedAt + "\r\n\r\n" + data[0].Body;
-						var title = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
 						//this.Text = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
 						//btnDownload.Enabled = true;
 						DisplayResults("An update is available!", releaseNotes, title, 0);
@@ -135,7 +136,7 @@ namespace MidiControl {
 						//txtReleaseNotes.Text = "You are currently on the latest version :)";
 
 						//this.Text = "Up to date - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
-						DisplayResults("No updates are available at this time.", "You are already on the latest version :)", "Updates", 1);
+						DisplayResults("No updates are available at this time.", "You are already on the latest version :)", title, 1);
 					}
 				}
 			});
@@ -204,6 +205,27 @@ namespace MidiControl {
 			var v = ver.Split('.');
 
 			return new int[] { int.Parse(v[0]), int.Parse(v[1]), int.Parse(v[2]), int.Parse(v[3]) };
+		}
+
+		private bool versionIsNewer(int[] compare, int[] current) {
+			if(compare[0] > current[0]) {
+				return true;
+			} else if(compare[0] == current[0]) {
+				// minor
+				if(compare[1] > current[1]) {
+					return true;
+				} else if(compare[1] == current[1]) {
+					if(compare[2] > current[2]) {
+						return true;
+					} else if(compare[2] == current[2]) {
+						if(compare[3] > current[3]) {
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 
