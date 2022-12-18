@@ -13,6 +13,7 @@ namespace MidiControl
 		public static bool StartedToTray = false;
 
 		public static readonly int obsVersion = 27;
+		public static readonly string wsVersion = "4.9.1";
 		public static readonly string urlUpdates = "https://api.github.com/repos/jboby93/MidiControl/releases";
 
         /// <summary>
