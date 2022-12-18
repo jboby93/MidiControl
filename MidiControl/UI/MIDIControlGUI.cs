@@ -266,7 +266,7 @@ namespace MidiControl {
 		}
 
 		private void RefreshWindowTitle() {
-			Text = trayIcon.Text = "MIDIControl (for OBS " + Program.obsVersion + ") - [" + conf.CurrentProfile + (conf.Unsaved?"*":"") + "]";
+			Text = trayIcon.Text = "MIDIControl (for obs-websocket " + Program.wsVersion + ") - [" + conf.CurrentProfile + (conf.Unsaved?"*":"") + "]";
 		}
 
 		// delegate handlers; from MIDIControlGUI; config/profiles/keybind refresh
@@ -719,6 +719,11 @@ namespace MidiControl {
 				// only one that really needs handled in any way is 'yes'
 				if(updategui.ShowDialog() == DialogResult.Yes) {
 
+				}
+
+				if(updategui.AppShouldClose) {
+					System.Diagnostics.Process.Start(updategui.UpdateExe);
+					ExitToolStripMenuItem_Click(sender, e);
 				}
 			}
 		}

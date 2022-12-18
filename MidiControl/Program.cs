@@ -14,6 +14,7 @@ namespace MidiControl
 
 		public static readonly int obsVersion = 28;
 		public static readonly string urlUpdates = "https://api.github.com/repos/Etuldan/MidiControl/releases";
+		public static readonly string wsVersion = "5.0";
 
 		/// <summary>
 		/// Point d'entrée principal de l'application.

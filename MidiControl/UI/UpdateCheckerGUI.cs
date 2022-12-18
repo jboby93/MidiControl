@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 #if DEBUG
 using System.Diagnostics;
@@ -16,6 +17,11 @@ namespace MidiControl {
 		private readonly Size progressSize = new Size(406, 105);
 
 		private bool updateFound = false;
+
+		private GithubReleasesAPIResponse.Root available = null;
+
+		public bool AppShouldClose { get; private set; }
+		public string UpdateExe { get; private set; }
 
 		public UpdateCheckerGUI() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MIDIControlGUI));
@@ -124,6 +130,9 @@ namespace MidiControl {
 					Debug.WriteLine("- most recent version available is: " + String.Join(".", releaseVersion));
 #endif
 
+					if(mostRecent > -1)
+						available = data[mostRecent];
+
 					if(updateFound) {
 						//grpBox.Text = "An update is available!";
 						var releaseNotes = data[mostRecent].Name + "\r\n" + data[mostRecent].PublishedAt + "\r\n\r\n" + data[mostRecent].Body;
@@ -173,7 +182,56 @@ namespace MidiControl {
 		}
 
 		private void btnDownload_Click(object sender, EventArgs e) {
+			if(available != null) {
+				btnDownload.Enabled = btnCancel.Enabled = false;
 
+				// need to fetch the Setup.exe asset and download it
+				using(var http = new WebClient()) {
+					http.UseDefaultCredentials = true;
+					http.Headers["User-Agent"] = "Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0) (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+					// find the asset containing "Setup" and "exe"
+					int asset = -1;
+					for(int i = 0; i < available.Assets.Count; i++) {
+						if(available.Assets[i].Name.ToLower().Contains("setup") && available.Assets[i].Name.ToLower().Contains("exe")) {
+							asset = i;
+						}
+					}
+
+					if(asset == -1) {
+						// couldn't find an exe?
+						// just open the release page in a browser for a usable experience
+						System.Diagnostics.Process.Start(available.Url);
+
+						btnDownload.Enabled = btnCancel.Enabled = true;
+						return;
+					}
+
+					var dest = UpdateCheckerGUI.getDownloadsFolder() + "\\" + available.Assets[asset].Name;
+
+					try {
+						http.Timeout = 5000; // 5 second timeout instead of the default
+						http.DownloadFile(available.Assets[asset].BrowserDownloadUrl, dest);
+					} catch(System.Net.WebException ex) {
+						System.Diagnostics.Process.Start(available.Url);
+						btnDownload.Enabled = btnCancel.Enabled = true;
+						return;
+					}
+
+					// file downloaded
+					if(MessageBox.Show("Update downloaded successfully to " + dest + ".  Install now?", "Update downloaded", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+						this.AppShouldClose = true;
+						this.UpdateExe = dest;
+					}
+				}
+
+				btnDownload.Enabled = btnCancel.Enabled = true;
+
+				if(this.AppShouldClose) {
+					DialogResult = DialogResult.Yes;
+					Close();
+				}
+			}
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e) {
@@ -227,7 +285,20 @@ namespace MidiControl {
 
 			return false;
 		}
+
+		//https://stackoverflow.com/questions/7672774/how-do-i-determine-the-windows-download-folder-path
+		private class KnownFolder {
+			public static readonly Guid Downloads = new Guid("374DE290-123F-4565-9164-39C4925E467B");
+		}
+
+		[DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+		private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out string pszPath);
+
+		private static string getDownloadsFolder() {
+			string downloads;
+			SHGetKnownFolderPath(KnownFolder.Downloads, 0, IntPtr.Zero, out downloads);
+
+			return downloads;
+		}
 	}
-
-
 }
