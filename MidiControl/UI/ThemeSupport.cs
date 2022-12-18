@@ -54,6 +54,9 @@ namespace MidiControl {
 						ctrl.ForeColor = theme.MenuForeColor;
 						ThemeOtherWindow(themeindex, ctrl);
 						break;
+					case "LinkLabel":
+						(ctrl as LinkLabel).LinkColor = theme.LinkLabelForeColor;
+						break;
 					default:
 						ctrl.BackColor = theme.WindowBackColor;
 						ctrl.ForeColor = theme.MenuForeColor;
@@ -76,6 +79,7 @@ namespace MidiControl {
             public virtual Color ListViewColumnBackColor => SystemColors.Control;
             public virtual Color ListViewColumnForeColor => SystemColors.ControlText;
 			public virtual BorderStyle ListViewBorderStyle => BorderStyle.Fixed3D;
+			public virtual Color LinkLabelForeColor => Color.Blue;
 
             public virtual Color MIDILabelOff => Color.Red;
             public virtual Color MIDILabelOn => Color.Green;
@@ -112,6 +116,7 @@ namespace MidiControl {
 			public override Color ListViewBackColor => Color.FromArgb(24, 24, 24);
 			public override Color ListViewForeColor => Color.FromArgb(224, 224, 224);
 			public override BorderStyle ListViewBorderStyle => BorderStyle.None;
+			public override Color LinkLabelForeColor => Color.FromArgb(0, 127, 255);
 
 			public override Color ToolStripGradientBegin => Color.Black;
 			public override Color ToolStripGradientMiddle => Color.FromArgb(24, 24, 24);
@@ -157,8 +162,9 @@ namespace MidiControl {
             public override Color ListViewColumnBackColor => Color.FromArgb(51, 51, 52);
             public override Color ListViewColumnForeColor => Color.FromArgb(212, 212, 212);
             public override BorderStyle ListViewBorderStyle => BorderStyle.None;
+			public override Color LinkLabelForeColor => Color.FromArgb(0, 127, 255);
 
-            public override bool CustomMenuCheckRendering => true;
+			public override bool CustomMenuCheckRendering => true;
 			public override bool ThemeOtherWindows => true;
 
 			public override Image SaveIcon => Properties.Resources.floppy_disk_light;

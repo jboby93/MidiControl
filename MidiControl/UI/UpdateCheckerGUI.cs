@@ -19,6 +19,7 @@ namespace MidiControl {
 		private bool updateFound = false;
 
 		private GithubReleasesAPIResponse.Root available = null;
+		private string githubLink = "https://github.com/Etuldan/MidiControl/releases";
 
 		public bool AppShouldClose { get; private set; }
 		public string UpdateExe { get; private set; }
@@ -36,6 +37,7 @@ namespace MidiControl {
 			grpBox.Text = "Checking for updates...";
 
 			btnDownload.Enabled = false;
+			lnkGithubLink.Visible = false;
 
 			ThemeSupport.ThemeOtherWindow((new OptionsManagment()).options.Theme, this);
 		}
@@ -160,8 +162,12 @@ namespace MidiControl {
 			this.Text = title;
 
 			this.Size = this.normalSize;
+			int dh = this.normalSize.Height - this.progressSize.Height;
+			this.Top -= (int)(dh / 2);
+
 			this.FormBorderStyle = FormBorderStyle.Sizable;
 			progressBar1.Visible = false;
+			lnkGithubLink.Visible = true;
 
 			grpBox.Text = caption;
 			txtReleaseNotes.Text = body;
@@ -299,6 +305,10 @@ namespace MidiControl {
 			SHGetKnownFolderPath(KnownFolder.Downloads, 0, IntPtr.Zero, out downloads);
 
 			return downloads;
+		}
+
+		private void lnkGithubLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+			System.Diagnostics.Process.Start(githubLink);
 		}
 	}
 }
