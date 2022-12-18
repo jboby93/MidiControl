@@ -93,6 +93,7 @@
 			// 
 			// lnkGithubLink
 			// 
+			this.lnkGithubLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lnkGithubLink.AutoSize = true;
 			this.lnkGithubLink.Location = new System.Drawing.Point(12, 272);
 			this.lnkGithubLink.Name = "lnkGithubLink";
