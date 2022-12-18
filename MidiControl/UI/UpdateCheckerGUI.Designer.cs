@@ -28,13 +28,14 @@
 			this.grpBox = new System.Windows.Forms.GroupBox();
 			this.txtReleaseNotes = new System.Windows.Forms.TextBox();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.lnkGithubLink = new System.Windows.Forms.LinkLabel();
 			this.grpBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btnDownload
 			// 
 			this.btnDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDownload.Location = new System.Drawing.Point(226, 35);
+			this.btnDownload.Location = new System.Drawing.Point(226, 241);
 			this.btnDownload.Name = "btnDownload";
 			this.btnDownload.Size = new System.Drawing.Size(75, 23);
 			this.btnDownload.TabIndex = 0;
@@ -45,7 +46,7 @@
 			// btnCancel
 			// 
 			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnCancel.Location = new System.Drawing.Point(307, 35);
+			this.btnCancel.Location = new System.Drawing.Point(307, 241);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 1;
@@ -61,7 +62,7 @@
 			this.grpBox.Controls.Add(this.txtReleaseNotes);
 			this.grpBox.Location = new System.Drawing.Point(12, 12);
 			this.grpBox.Name = "grpBox";
-			this.grpBox.Size = new System.Drawing.Size(370, 17);
+			this.grpBox.Size = new System.Drawing.Size(370, 223);
 			this.grpBox.TabIndex = 2;
 			this.grpBox.TabStop = false;
 			this.grpBox.Text = "MIDIControl v2.x.y.x is available!";
@@ -74,7 +75,7 @@
 			this.txtReleaseNotes.Multiline = true;
 			this.txtReleaseNotes.Name = "txtReleaseNotes";
 			this.txtReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtReleaseNotes.Size = new System.Drawing.Size(364, 0);
+			this.txtReleaseNotes.Size = new System.Drawing.Size(364, 204);
 			this.txtReleaseNotes.TabIndex = 3;
 			this.txtReleaseNotes.Text = "Release notes pulled from GitHub:\r\n- Lorem\r\n- Ipsum\r\n- Something\r\n- Something els" +
     "e\r\n- idk";
@@ -83,18 +84,32 @@
 			// 
 			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar1.Location = new System.Drawing.Point(15, 35);
+			this.progressBar1.Location = new System.Drawing.Point(15, 241);
 			this.progressBar1.Name = "progressBar1";
 			this.progressBar1.Size = new System.Drawing.Size(205, 23);
 			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
 			this.progressBar1.TabIndex = 3;
 			this.progressBar1.Value = 50;
 			// 
+			// lnkGithubLink
+			// 
+			this.lnkGithubLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.lnkGithubLink.AutoSize = true;
+			this.lnkGithubLink.Location = new System.Drawing.Point(12, 246);
+			this.lnkGithubLink.Name = "lnkGithubLink";
+			this.lnkGithubLink.Size = new System.Drawing.Size(76, 13);
+			this.lnkGithubLink.TabIndex = 4;
+			this.lnkGithubLink.TabStop = true;
+			this.lnkGithubLink.Text = "view on github";
+			this.lnkGithubLink.Visible = false;
+			this.lnkGithubLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkGithubLink_LinkClicked);
+			// 
 			// UpdateCheckerGUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(390, 66);
+			this.ClientSize = new System.Drawing.Size(390, 272);
+			this.Controls.Add(this.lnkGithubLink);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.grpBox);
 			this.Controls.Add(this.btnCancel);
@@ -109,6 +124,7 @@
 			this.grpBox.ResumeLayout(false);
 			this.grpBox.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -119,5 +135,6 @@
 		private System.Windows.Forms.GroupBox grpBox;
 		private System.Windows.Forms.TextBox txtReleaseNotes;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.LinkLabel lnkGithubLink;
 	}
 }
