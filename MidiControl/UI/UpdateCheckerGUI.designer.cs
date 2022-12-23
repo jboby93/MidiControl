@@ -70,10 +70,11 @@
 			// txtReleaseNotes
 			// 
 			this.txtReleaseNotes.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtReleaseNotes.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtReleaseNotes.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.txtReleaseNotes.Location = new System.Drawing.Point(3, 16);
 			this.txtReleaseNotes.Multiline = true;
 			this.txtReleaseNotes.Name = "txtReleaseNotes";
+			this.txtReleaseNotes.ReadOnly = true;
 			this.txtReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.txtReleaseNotes.Size = new System.Drawing.Size(364, 230);
 			this.txtReleaseNotes.TabIndex = 3;
