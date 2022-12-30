@@ -32,7 +32,7 @@ namespace MidiControl {
 			this.Size = this.progressSize;
 			this.FormBorderStyle = FormBorderStyle.Fixed3D;
 
-			this.Text = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
+			this.Text = "Updates - Current version: " + Application.ProductVersion + ", ws " + Program.wsVersion;
 
 			grpBox.Text = "Checking for updates...";
 
@@ -45,8 +45,6 @@ namespace MidiControl {
 		private void UpdateCheckerGUI_Load(object sender, EventArgs e) {
 			this.Size = this.progressSize;
 			this.Show();
-
-			var title = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
 
 			// (https://stackoverflow.com/questions/19028374/accessing-ui-controls-in-task-run-with-async-await-on-winforms/25903258#25903258)
 			Task.Run(() => {
@@ -69,35 +67,22 @@ namespace MidiControl {
 						http.Timeout = 5000; // 5 second timeout instead of the default
 						json = http.DownloadString(Program.urlUpdates);
 					} catch(System.Net.WebException ex) {
-						//this.Size = this.normalSize;
-						//this.FormBorderStyle = FormBorderStyle.Sizable;
-						//progressBar1.Visible = false;
-
-						//grpBox.Text = "Unable to check for updates";
-						//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
-
-						DisplayResults("Unable to check for updates", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, title, 1);
+						DisplayResults("Unable to check for updates", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, 1);
 
 						http.Dispose();
 
 						return;
 					}
 
-					//this.Size = this.normalSize;
-					//this.FormBorderStyle = FormBorderStyle.Sizable;
-					//progressBar1.Visible = false;
-
 					// attempt to parse the result
 #if DEBUG
-					Debug.WriteLine("json = \n" + json);
+					//Debug.WriteLine("json = \n" + json);
 #endif
 					List<GithubReleasesAPIResponse.Root> data = new List<GithubReleasesAPIResponse.Root>();
 					try {
 						data = JsonConvert.DeserializeObject<List<GithubReleasesAPIResponse.Root>>(json);
 					} catch(Exception ex) {
-						//grpBox.Text = "Error parsing received data";
-						//txtReleaseNotes.Text = "An error occurred while checking for updates:\n\n" + ex.Message;
-						DisplayResults("Error parsing received data", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, title, 1);
+						DisplayResults("Error parsing received data", "An error occurred while checking for updates:\r\n\r\n" + ex.Message, 1);
 						return;
 					}
 
@@ -136,30 +121,20 @@ namespace MidiControl {
 						available = data[mostRecent];
 
 					if(updateFound) {
-						//grpBox.Text = "An update is available!";
 						var releaseNotes = data[mostRecent].Name + "\r\n" + data[mostRecent].PublishedAt + "\r\n\r\n" + data[mostRecent].Body;
-						//txtReleaseNotes.Text = data[0].Name + "\r\n" + data[0].PublishedAt + "\r\n\r\n" + data[0].Body;
-						//this.Text = "Updates - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
-						//btnDownload.Enabled = true;
-						DisplayResults("An update is available!", releaseNotes, title, 0);
+						DisplayResults("An update is available!", releaseNotes, 0);
 					} else {
-						//grpBox.Text = "No updates are available at this time.";
-						//txtReleaseNotes.Text = "You are currently on the latest version :)";
-
-						//this.Text = "Up to date - Current version: " + Application.ProductVersion + ", OBS " + Program.obsVersion;
-						DisplayResults("No updates are available at this time.", "You are already on the latest version :)", title, 1);
+						DisplayResults("No updates are available at this time.", "You are already on the latest version :)", 1);
 					}
 				}
 			});
 		}
 
-		private void DisplayResults(string caption, string body, string title, int layout) {
+		private void DisplayResults(string caption, string body, int layout) {
 			if(InvokeRequired) {
-				Invoke((Action<string, string, string, int>) DisplayResults, caption, body, title, layout);
+				Invoke((Action<string, string, int>) DisplayResults, caption, body, layout);
 				return;
 			}
-
-			this.Text = title;
 
 			this.Size = this.normalSize;
 			int dh = this.normalSize.Height - this.progressSize.Height;

@@ -728,8 +728,8 @@ namespace MidiControl {
 				}
 
 				if(updategui.AppShouldClose) {
-					System.Diagnostics.Process.Start(updategui.UpdateExe);
 					ExitToolStripMenuItem_Click(sender, e);
+					System.Diagnostics.Process.Start(updategui.UpdateExe);
 				}
 			}
 		}
