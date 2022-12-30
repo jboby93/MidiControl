@@ -478,7 +478,13 @@ namespace MidiControl {
                 overview.ForeColor = this.GetCurrentTheme().ListViewSubitemForeColor;
 
 				item.SubItems.Add(overview);
-				item.ToolTipText = summary.Replace(" / ", "\n");
+				var midiTip = "Device: " + entry.Value.Mididevice + "\n";
+				if(entry.Value.Input == Event.Note)
+					midiTip += "Note " + MIDIListener.GetNoteString(entry.Value.NoteNumber);
+				else
+					midiTip += "CC " + entry.Value.NoteNumber;
+
+				item.ToolTipText = midiTip + "\n\n" + summary.Replace(" / ", "\n");
 
 				listKeybinds.Items.Add(item);
 			}
