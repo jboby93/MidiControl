@@ -375,9 +375,10 @@ e
 					if(filtersetting.Name == filter) {
 						var setting = obs.GetSourceFilter(scene, filter);
 						var currentVisibility = setting.IsEnabled;
-						var newsettings = setting;
-						newsettings.IsEnabled = !currentVisibility;
-						obs.SetSourceFilterSettings(scene, filter, newsettings);
+						obs.SetSourceFilterEnabled(scene, filter, !currentVisibility);
+						//var newsettings = setting;
+						//newsettings.IsEnabled = !currentVisibility;
+						//obs.SetSourceFilterSettings(scene, filter, newsettings);
 						if(currentVisibility == false) {
 							state = true;
 						}
@@ -391,8 +392,9 @@ e
 						var setting = obs.GetSourceFilter(source, filter);
 						var currentVisibility = setting.IsEnabled;
 						var newsettings = setting;
-						newsettings.IsEnabled = !currentVisibility;
-						obs.SetSourceFilterSettings(source, filter, newsettings);
+						obs.SetSourceFilterEnabled(source, filter, !currentVisibility);
+						//newsettings.IsEnabled = !currentVisibility;
+						//obs.SetSourceFilterSettings(source, filter, newsettings);
 						if(currentVisibility == false) {
 							state = true;
 						}
@@ -411,19 +413,23 @@ e
 			foreach(string scene in this.GetScenes()) {
 				foreach(var filtersetting in obs.GetSourceFilterList(scene)) {
 					if(filtersetting.Name == filter) {
-						var setting = obs.GetSourceFilter(scene, filter);
-						setting.IsEnabled = show;
-						obs.SetSourceFilterSettings(scene, filter, setting);
+						obs.SetSourceFilterEnabled(scene, filter, show);
+						//var setting = obs.GetSourceFilter(scene, filter);
+						//setting.IsEnabled = show;
+						//obs.SetSourceFilterSettings(scene, filter, setting);
 					}
 				}
 			}
 
 			foreach(var source in this.GetSources()) {
+				var filterList = obs.GetSourceFilterList(source);
+
 				foreach(var filtersetting in obs.GetSourceFilterList(source)) {
 					if(filtersetting.Name == filter) {
-						var setting = obs.GetSourceFilter(source, filter);
-						setting.IsEnabled = show;
-						obs.SetSourceFilterSettings(source, filter, setting);
+						obs.SetSourceFilterEnabled(source, filter, show);
+						//var setting = obs.GetSourceFilter(source, filter);
+						//setting.IsEnabled = show;
+						//obs.SetSourceFilterSettings(source, filter, setting);
 					}
 				}
 			}
